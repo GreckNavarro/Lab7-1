@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-[CreateAssetMenu(fileName = "SoundScriptableObject", menuName = "ScriptableObject/Audio/SoundScriptableObject", order =1)]
+[CreateAssetMenu(fileName = "SoundScriptableObject", menuName = "ScriptableObject/Audio/SoundScriptableObject", order =2)]
 public class SoundScriptableObject : ScriptableObject
 {
     [SerializeField] private AudioClip myAudio;

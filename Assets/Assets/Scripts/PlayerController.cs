@@ -50,6 +50,12 @@ public class PlayerController : MonoBehaviour
             LowLife();
         }
 
+        if(vidaactual == 0)
+        {
+            Destroy(gameObject);
+        }
+        
+
 
 
     }
