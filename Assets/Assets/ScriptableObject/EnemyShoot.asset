@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 302494b193cc2444a98d7f5cf0f7f08e, type: 3}
+  m_Name: EnemyShoot
+  m_EditorClassIdentifier: 
+  myAudio: {fileID: 8300000, guid: eba9d8f1aa3a183449fb320a7ef00351, type: 3}
+  myGroup: {fileID: 4337897840696234248, guid: c132e00b43e72084b846fe402b067883, type: 2}

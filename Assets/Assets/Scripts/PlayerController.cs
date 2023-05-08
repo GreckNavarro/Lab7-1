@@ -11,12 +11,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private BulletController bulletPrefab;
     [SerializeField] private CameraController cameraReference;
+    [SerializeField] private HeaderAttribute playerController;
+    [SerializeField] private SoundScriptableObject soundScriptableObject;
+    [SerializeField] private HealthBarController barravida;
+    [SerializeField] private int vidaactual;
+    private bool lowLifeMusicPlayed = false;
 
+    [SerializeField] private AudioSource audiosource;
     private void Start() {
         GetComponent<HealthBarController>().onHit += cameraReference.CallScreenShake;
     }
 
+
+
     private void Update() {
+        vidaactual = barravida.currentValue;
         Vector2 movementPlayer = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         myRBD2.velocity = movementPlayer * velocityModifier;
 
@@ -31,13 +40,31 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0)){
             BulletController myBullet =  Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-            myBullet.SetUpVelocity(distance.normalized, gameObject.tag);
+            myBullet.SetUpVelocity(distance.normalized, 6, soundScriptableObject);
         }else if(Input.GetMouseButtonDown(1)){
             Debug.Log("Left Click");
+        }
+
+        if (vidaactual <= 25)
+        {
+            LowLife();
+        }
+
+
+
+    }
+    private void LowLife()
+    {
+        
+        if (!lowLifeMusicPlayed)
+        {
+            audiosource.Play();
+            lowLifeMusicPlayed = true;
         }
     }
 
     private void CheckFlip(float x_Position){
         spriteRenderer.flipX = (x_Position - transform.position.x) < 0;
     }
+
 }

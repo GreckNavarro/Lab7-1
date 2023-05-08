@@ -22,8 +22,8 @@ public class EnemySimpleController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.CompareTag("Player")){
-            if(other.GetComponent<HealthBarController>()){
-                onCollision?.Invoke(damage,other.GetComponent<HealthBarController>());
+            if (other.GetComponent<HealthBarController>()) {
+                onCollision?.Invoke(damage, other.GetComponent<HealthBarController>());
             }
         }
     }

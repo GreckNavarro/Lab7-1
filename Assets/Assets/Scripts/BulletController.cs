@@ -8,12 +8,16 @@ public class BulletController : MonoBehaviour
     [SerializeField] private Rigidbody2D myRGB2D;
     [SerializeField] private float velocityMultiplier;
     [SerializeField] private int damage;
+    [SerializeField] private PlayerController player;
     public event Action<int, HealthBarController> onCollision;
 
-    public void SetUpVelocity(Vector2 velocity, string newTag){
-        myRGB2D.velocity = velocity * velocityMultiplier;
-        gameObject.tag = newTag;
+    
 
+    public void SetUpVelocity(Vector2 velocity, int newlayer, SoundScriptableObject myAudioSO){
+        myRGB2D.velocity = velocity * velocityMultiplier;
+        gameObject.layer = newlayer;
+
+        myAudioSO.CreateSound();
         DamageManager.instance.SubscribeFunction(this);
     }
 

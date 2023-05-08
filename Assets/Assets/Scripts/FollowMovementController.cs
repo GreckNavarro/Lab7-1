@@ -8,6 +8,8 @@ public class FollowMovementController : MonoBehaviour
     [SerializeField] private Rigidbody2D ogreRB2D;
     [SerializeField] private float velocityModifier;
     [SerializeField] private BulletController bullet;
+    [SerializeField] private SoundScriptableObject disparar;
+    [SerializeField] private AudioSource audioSource;
     private Transform currentTarget;
     private bool isFollowing;
     private bool isMoving;
@@ -31,6 +33,7 @@ public class FollowMovementController : MonoBehaviour
             ogreRB2D.velocity = (currentTarget.position - ogreTransform.position).normalized * velocityModifier;
             CalculateDistance();
         }
+
     }
 
     private void CalculateDistance(){
@@ -44,7 +47,7 @@ public class FollowMovementController : MonoBehaviour
     }
     
     IEnumerator ShootBullet(){
-        Instantiate(bullet, ogreTransform.position, Quaternion.identity).SetUpVelocity(ogreRB2D.velocity, "Enemy");
+        Instantiate(bullet, ogreTransform.position, Quaternion.identity).SetUpVelocity(ogreRB2D.velocity, 7, disparar);
         yield return new WaitForSeconds(1f);
         canShoot = true;
     }
@@ -53,6 +56,7 @@ public class FollowMovementController : MonoBehaviour
         if(other.CompareTag("Player")){
             currentTarget = other.transform;
             isFollowing = true;
+            audioSource.Play();
         }
     }
 
@@ -60,6 +64,7 @@ public class FollowMovementController : MonoBehaviour
         if(other.CompareTag("Player")){
             currentTarget = transform;
             isFollowing = false;
+            audioSource.Stop();
         }
     }
 }

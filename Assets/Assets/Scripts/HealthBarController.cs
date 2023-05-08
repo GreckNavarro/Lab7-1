@@ -10,8 +10,9 @@ public class HealthBarController : MonoBehaviour
     [SerializeField] private RectTransform healthBar;
     [SerializeField] private RectTransform modifiedBar;
     [SerializeField] private float changeSpeed;
-
-    private int currentValue;
+    [SerializeField] private SoundScriptableObject sound;
+ 
+    public int currentValue;
     private float _fullWidth;
     private float TargetWidth => currentValue * _fullWidth / maxValue;
     private Coroutine updateHealthBarCoroutine;
@@ -24,6 +25,7 @@ public class HealthBarController : MonoBehaviour
         _fullWidth = healthBar.rect.width;
     }
 
+
     /// <summary>
     /// Metodo <c>UpdateHealth</c> actualiza la vida del personaje de manera visual. Recibe una cantidad de vida modificada.
     /// </summary>
@@ -31,13 +33,15 @@ public class HealthBarController : MonoBehaviour
     public void UpdateHealth(int amount){
         currentValue = Mathf.Clamp(currentValue + amount, 0, maxValue);
         onHit?.Invoke();
+        sound.CreateSound();
 
         if(updateHealthBarCoroutine != null){
             StopCoroutine(updateHealthBarCoroutine);
         }
         updateHealthBarCoroutine = StartCoroutine(AdjustWidthBar(amount));
 
-        if(currentValue == 0){
+
+        if (currentValue == 0){
             onDeath?.Invoke();
         }
     }

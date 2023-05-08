@@ -149,3 +149,4 @@ MonoBehaviour:
   myRGB2D: {fileID: 2085866194773098777}
   velocityMultiplier: 10
   damage: 50
+  sound: {fileID: 11400000, guid: dca285aa1e91af54898fedc1332dceaf, type: 2}
