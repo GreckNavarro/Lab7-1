@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,33 +19,48 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int vidaactual;
     private bool lowLifeMusicPlayed = false;
 
+
+
+
+
+
+
+
+
+
+
+    [Header("InputSystem")]
+    Vector2 rawInputMovement;
+    Vector3 mouseposition;
+
+
+
+
+
     [SerializeField] private AudioSource audiosource;
     private void Start() {
         GetComponent<HealthBarController>().onHit += cameraReference.CallScreenShake;
     }
 
-
+    void Movimiento()
+    {
+        myRBD2.velocity = rawInputMovement * velocityModifier;
+    }
+    void Apuntar()
+    {
+        Vector2 distance = mouseposition - transform.position;
+        Debug.DrawRay(transform.position, distance * rayDistance, Color.red);
+    }
 
     private void Update() {
         vidaactual = barravida.currentValue;
-        Vector2 movementPlayer = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        myRBD2.velocity = movementPlayer * velocityModifier;
+
+        Movimiento();
 
         animatorController.SetVelocity(velocityCharacter: myRBD2.velocity.magnitude);
 
-        Vector3 mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Apuntar();
 
-        CheckFlip(mouseInput.x);
-    
-        Vector3 distance = mouseInput - transform.position;
-        Debug.DrawRay(transform.position, distance * rayDistance, Color.red);
-
-        if(Input.GetMouseButtonDown(0)){
-            BulletController myBullet =  Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-            myBullet.SetUpVelocity(distance.normalized, 6, soundScriptableObject);
-        }else if(Input.GetMouseButtonDown(1)){
-            Debug.Log("Left Click");
-        }
 
         if (vidaactual <= 25)
         {
@@ -72,5 +89,30 @@ public class PlayerController : MonoBehaviour
     private void CheckFlip(float x_Position){
         spriteRenderer.flipX = (x_Position - transform.position.x) < 0;
     }
+
+
+    public void OnMovement(InputAction.CallbackContext value)
+    {
+        Vector2 inputMovement = value.ReadValue<Vector2>();
+        rawInputMovement = new Vector2(inputMovement.x, inputMovement.y);
+    }
+
+    public void OnAim(InputAction.CallbackContext value)
+    {
+        Vector2 direccionmouse = Camera.main.ScreenToWorldPoint(value.ReadValue<Vector2>());
+        mouseposition = direccionmouse;
+        Debug.Log(mouseposition);
+    }
+
+    public void OnFire(InputAction.CallbackContext value)
+    {
+        if (value.started)
+        {
+            Vector2 distance = mouseposition - transform.position;
+            BulletController myBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+            myBullet.SetUpVelocity(distance.normalized, 6, soundScriptableObject);
+        }
+    }
+
 
 }
